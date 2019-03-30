@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,8 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 public class ImageDetailFragment extends Fragment {
     public static int mImageLoading;//占位符图片
@@ -84,15 +87,17 @@ public class ImageDetailFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (!TextUtils.isEmpty(mImageUrl)) {
-            Glide.with(getActivity()).load(mImageUrl).asBitmap().placeholder(mImageLoading).error(mImageLoading)
+            RequestOptions options = new RequestOptions().placeholder(mImageLoading);
+            Glide.with(getActivity()).asBitmap().load(mImageUrl)
+                    .apply(options)
                     .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                            mBitmap = bitmap;
-                            mImageView.setImageBitmap(mBitmap);
-                            mAttacher.update();
-                        }
-                    });
+                @Override
+                public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                    mBitmap = bitmap;
+                    mImageView.setImageBitmap(mBitmap);
+                    mAttacher.update();
+                }
+            });
         } else {
             mImageView.setImageResource(mImageLoading);
         }

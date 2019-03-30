@@ -3,11 +3,9 @@ package com.SuperKotlin.pictureviewer.demo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.SuperKotlin.pictureviewer.ImagePagerActivity;
 import com.SuperKotlin.pictureviewer.PictureConfig;
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
